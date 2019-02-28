@@ -17,6 +17,7 @@
       x: 248,
       y: 126
     }
+    const initialGuardPositionY = 118
 
     const ball_step_px = 2
     const guard_height_px = 40
@@ -44,17 +45,17 @@
     var guard_postition = {
       left: {
         x: 20,
-        y: 118
+        y: initialGuardPositionY
       },
       right: {
         x: 475,
-        y: 118
+        y: initialGuardPositionY
       }
     }
 
     var ball_position = {
-      x: 248,
-      y: 126
+      x: centered_ball_position.x,
+      y: centered_ball_position.y
     }
 
     function set_background() {
@@ -102,7 +103,35 @@
       set_ball(ball_position.x, ball_position.y);
     }
 
+    function resetBallPosition() {
+      set_ball(ball_position.x, ball_position.y, true);
+
+      ball_position.x = centered_ball_position.x
+      ball_position.y = centered_ball_position.y
+
+      set_ball(ball_position.x, ball_position.y, false);
+    }
+
+    function resetPlayerText() {
+      berlinPlayerText.html('Waiting for Berlin...')
+      stockholmPlayerText.html('Waiting for Stockholm...')
+    }
+
+    function resetGuardsPositions() {
+      set_left_guard(guard_postition.left.y, true);
+      guard_postition.left.y = initialGuardPositionY;
+      guard_postition.left.direction = undefined 
+      set_left_guard(guard_postition.left.y, false);
+
+      set_right_guard(guard_postition.right.y, true);
+      guard_postition.right.y = initialGuardPositionY;
+      guard_postition.right.direction = undefined 
+      set_right_guard(guard_postition.right.y, false);
+
+    }
+
     init();
+    resetPlayerText();
 
     setInterval(function() {
       if(game_started) {
@@ -249,20 +278,26 @@
       berlinPlayerText.html('BERLIN')
       stockholmPlayerText.html('STOCKHOLM')
 
+      berlinScore.html(0)
+      stockholmScore.html(0)
+
       waiting.hide()
     });
+
+    socket.on('game_over', function(data) {
+      console.log('game over', data)
+      game_started = false
+      join.show()
+      resetBallPosition()
+      resetPlayerText()
+      resetGuardsPositions()
+    })
 
     socket.on('start_round', function(data) {
       game_started = false
 
-      set_ball(ball_position.x, ball_position.y, true);
-
-      ball_position.x = centered_ball_position.x
-      ball_position.y = centered_ball_position.y
-
+      resetBallPosition()
       right = data.direction === 'right'
-
-      set_ball(ball_position.x, ball_position.y, false);
 
       setTimeout(() => {
         game_started = true
