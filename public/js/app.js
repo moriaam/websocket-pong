@@ -8,6 +8,8 @@
     var berlinScore = $('#berlin-score');
     var stockholmScore = $('#stockholm-score');
     var stockholmPlayerText = $('#stockholm-player');
+    var berlinFlag = $('#berlin-flag')
+    var stockholmFlag= $('#stockholm-flag')
     var context = canvas.getContext('2d');
     var right = false;
     var vertical_direction = 'up';
@@ -29,9 +31,11 @@
 
       if (site === 'berlin') {
         berlinPlayerText.html('BERLIN')
+        berlinFlag.css('filter', '')
         player_number = 1
       } else {
         stockholmPlayerText.html('STOCKHOLM')
+        stockholmFlag.css('filter', '')
         player_number = 2
       }
 
@@ -115,6 +119,8 @@
     function resetPlayerText() {
       berlinPlayerText.html('Waiting for Berlin...')
       stockholmPlayerText.html('Waiting for Stockholm...')
+      berlinFlag.css('filter', 'grayscale(100%)')
+      stockholmFlag.css('filter', 'grayscale(100%)')
     }
 
     function resetGuardsPositions() {
@@ -276,7 +282,9 @@
       right = data.direction === 'right'
 
       berlinPlayerText.html('BERLIN')
+      berlinFlag.css('filter', '')
       stockholmPlayerText.html('STOCKHOLM')
+      stockholmFlag.css('filter', '')
 
       berlinScore.html(0)
       stockholmScore.html(0)
