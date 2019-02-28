@@ -2,11 +2,25 @@
   $(document).ready(function() {
     var socket = io();
     var canvas = $('#c')[0];
+    var waiting = $('#waiting');
+    var join = $('#join');
+    var leftPlayerText = $('#left-player');
+    var rightPlayerText = $('#right-player');
     var context = canvas.getContext('2d');
     var right = true;
     var vertical_direction = 'up';
     var player_number;
     var game_started = false;
+    waiting.hide()
+
+    join[0].onclick = (e) => {
+      const site = window.location.search.substring(1).split('=')[1]
+
+      socket.emit('player_joined', site)
+
+      join.hide()
+      waiting.show()
+    }
 
     // Guard position
     var guard_postition = {
@@ -199,15 +213,24 @@
       }
     });
 
-    socket.on('player_enter', function(data) {
-      if(data === 1)
+    socket.on('player_enter', function(playerNumber, site) {
+      console.log(playerNumber, site)
+      if(playerNumber === 1) {
         player_number = 1;
-      else
+        leftPlayerText.html(site)
+      }
+      else {
         player_number = 2;
+        rightPlayerText.html(site)
+      }
+
+      // rightPlayerText.html(data)
     });
 
     socket.on('start_game', function(data) {
       game_started = true;
+
+      waiting.hide()
     });
 
     socket.on('move', function(data) {
@@ -230,7 +253,7 @@
     socket.on('game_over', function(data) {
       var winner = JSON.parse(data).winner;
       game_started = false;
-      alert(winner + ' won.');
+      // alert(winner + ' won.');
     })
   });
 }).call(this);
