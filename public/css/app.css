@@ -63,6 +63,10 @@
   justify-content: center;
 }
 
+#join-container {
+  width: 115px;
+}
+
 #join {
   background-color: black;
   color: white;
@@ -71,6 +75,7 @@
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 4px;
+  height: 100%;
 }
 
 .score {
