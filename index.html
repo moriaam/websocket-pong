@@ -11,20 +11,27 @@
       <img src="./images/de.jpg" class="flag" id="berlin-flag">
       <img src="/images/sv.jpg" class="flag" id="stockholm-flag">
     </div>
+    <div id="main-container">
     <h1>Pong</h1>
     <div class="canvas-container">
       <canvas id="c" width="500" height="276"></canvas>
     </div>
+    <div class="scores">
+      <div><span class="score" id="berlin-score">0</span></div>
+      <div class="seperator"></div>
+      <button id="join">join</button>
+      <div class="seperator"></div>
+      <div><span class="score" id="stockholm-score">0</span></div>
+    </div>
     <div class="center">
       <span id="berlin-player">waiting for Berlin</span>
-      <div><span id="berlin-score">0</span></div>
       <span id="stockholm-player">waiting for Stockholm</span>
-      <div><span id="stockholm-score">0</span></div>
       <div><span id="waiting">waiting.......</span></div>
       <button id="join">join</button>
       <p>Controls:</p>
       <p>Up: w</p>
       <p>Down: s</p>
     </div>
+    </div>div>
   </body>
 </html>
