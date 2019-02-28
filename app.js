@@ -26,7 +26,9 @@ io.on('connection', function(socket) {
       players++;
 
       if(players === 2) {
-        io.emit('start_game', 'ok'); 
+        io.emit('start_game', {
+          direction: Math.random()<0.5 ? 'right' : 'left'
+        }); 
         players = 0;
       }
 
@@ -61,7 +63,9 @@ io.on('connection', function(socket) {
 
       io.emit('update_scores', scores);
 
-      io.emit('start_round', 'ok');
+      io.emit('start_round', {
+        direction: Math.random()<0.5 ? 'right' : 'left'
+      });
     })
   })
 });
