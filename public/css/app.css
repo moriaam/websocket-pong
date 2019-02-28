@@ -1,25 +1,19 @@
-h1 {
-  text-align: center;
-  font-family: 'Arial';
-  margin: 0;
-}
-
 .header {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .logo {
   padding: 40px 0;
   display: flex;
-  margin-left: 20px;
   /* justify-content: center; */
 }
 
 .instructions {
   display: flex;
   align-items: center;
-  margin-left: 80px;
   font-family: 'Arial';
   font-size: 28px;
 }
