@@ -9,7 +9,7 @@
     var stockholmScore = $('#stockholm-score');
     var stockholmPlayerText = $('#stockholm-player');
     var context = canvas.getContext('2d');
-    var right = Math.random() > 0.5;
+    var right = false;
     var vertical_direction = 'up';
     var player_number;
     var game_started = false;
@@ -244,6 +244,7 @@
 
     socket.on('start_game', function(data) {
       game_started = true;
+      right = data.direction === 'right'
 
       berlinPlayerText.html('BERLIN')
       stockholmPlayerText.html('STOCKHOLM')
@@ -259,7 +260,7 @@
       ball_position.x = centered_ball_position.x
       ball_position.y = centered_ball_position.y
 
-      right = Math.random() > 0.5
+      right = data.direction === 'right'
 
       set_ball(ball_position.x, ball_position.y, false);
 
