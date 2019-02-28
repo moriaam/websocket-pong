@@ -18,6 +18,8 @@
       y: 126
     }
 
+    const ball_step_px = 2
+
     waiting.hide()
 
     join[0].onclick = (e) => {
@@ -108,12 +110,12 @@
             set_ball(ball_position.x, ball_position.y, true);
 
             if(vertical_direction === 'up') {
-              ball_position.x += 4;
-              ball_position.y -= 4;
+              ball_position.x += ball_step_px;
+              ball_position.y -= ball_step_px;
             }
             else if(vertical_direction === 'down') {
-              ball_position.x += 4;
-              ball_position.y += 4;
+              ball_position.x += ball_step_px;
+              ball_position.y += ball_step_px;
             }
 
             set_ball(ball_position.x, ball_position.y, false);
@@ -135,12 +137,12 @@
           if(ball_position.x > 26) {
             set_ball(ball_position.x, ball_position.y, true);
             if(vertical_direction === 'up') {
-              ball_position.x -= 4;
-              ball_position.y -= 4;
+              ball_position.x -= ball_step_px;
+              ball_position.y -= ball_step_px;
             }
             else if(vertical_direction === 'down') {
-              ball_position.x -= 4;
-              ball_position.y += 4;
+              ball_position.x -= ball_step_px;
+              ball_position.y += ball_step_px;
             }
 
             set_ball(ball_position.x, ball_position.y, false);
@@ -159,7 +161,7 @@
             right = true;
         }
       }
-    }, 50);
+    }, 16);
 
     $(document).keypress(function(data) {
       var charCode = data.charCode;
