@@ -19,6 +19,7 @@
     }
 
     const ball_step_px = 2
+    const guard_height_px = 40
 
     waiting.hide()
 
@@ -64,22 +65,22 @@
     function set_left_guard(y, clear) {
       if(clear) {
         context.fillStyle = 'black';
-        context.fillRect(guard_postition.left.x, y, 5, 20);
+        context.fillRect(guard_postition.left.x, y, 5, guard_height_px);
       }
       else {
         context.fillStyle = 'white';
-        context.fillRect(guard_postition.left.x, y, 5, 20);
+        context.fillRect(guard_postition.left.x, y, 5, guard_height_px);
       }
     }
 
     function set_right_guard(y, clear) {
       if(clear) {
         context.fillStyle = 'black';
-        context.fillRect(guard_postition.right.x, y, 5, 20);
+        context.fillRect(guard_postition.right.x, y, 5, guard_height_px);
       }
       else {
         context.fillStyle = 'white';
-        context.fillRect(guard_postition.right.x, y, 5, 20);
+        context.fillRect(guard_postition.right.x, y, 5, guard_height_px);
       }
     }
 
@@ -120,7 +121,7 @@
 
             set_ball(ball_position.x, ball_position.y, false);
 
-            if((ball_position.y > guard_postition.right.y + 20 || ball_position.y < guard_postition.right.y) && ball_position.x >= 470) {
+            if((ball_position.y > guard_postition.right.y + guard_height_px || ball_position.y < guard_postition.right.y) && ball_position.x >= 470) {
               socket.emit('round_over', JSON.stringify({winner: 'berlin'}));
               // game_started = false;
             }
@@ -147,7 +148,7 @@
 
             set_ball(ball_position.x, ball_position.y, false);
 
-            if((ball_position.y > guard_postition.left.y + 20 || ball_position.y < guard_postition.left.y) && ball_position.x <= 26) {
+            if((ball_position.y > guard_postition.left.y + guard_height_px || ball_position.y < guard_postition.left.y) && ball_position.x <= 26) {
               socket.emit('round_over', JSON.stringify({winner: 'stockholm'}));
               // game_started = false;
             }
