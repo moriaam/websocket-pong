@@ -249,6 +249,8 @@
     });
 
     socket.on('start_round', function(data) {
+      game_started = false
+
       set_ball(ball_position.x, ball_position.y, true);
 
       ball_position.x = centered_ball_position.x
@@ -257,6 +259,10 @@
       right = Math.random() > 0.5
 
       set_ball(ball_position.x, ball_position.y, false);
+
+      setTimeout(() => {
+        game_started = true
+      }, 2000)
     });
 
     socket.on('move', function(data) {
