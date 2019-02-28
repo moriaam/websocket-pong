@@ -5,7 +5,15 @@ var io = require('socket.io')(http);
 
 var players = 0;
 var root_path = process.cwd();
-let scores = {berlin: 0, stockholm: 0}
+let roundScores
+
+const scores_in_round = 3
+
+const resetRoundScores = () => {
+  roundScores = {berlin: 0, stockholm: 0}
+}
+
+resetRoundScores()
 
 app.use(express.static(root_path + '/public'));
 
@@ -59,13 +67,18 @@ io.on('connection', function(socket) {
     socket.on('round_over', function(data) {
       var winner = JSON.parse(data).winner;
       
-      scores[winner]++
+      roundScores[winner]++
 
-      io.emit('update_scores', scores);
+      io.emit('update_scores', roundScores);
 
-      io.emit('start_round', {
-        direction: Math.random()<0.5 ? 'right' : 'left'
-      });
+      if (roundScores[winner] < scores_in_round) {
+       io.emit('start_round', {
+         direction: Math.random()<0.5 ? 'right' : 'left'
+        });
+      } else {
+        io.emit('game_over', roundScores)
+        resetRoundScores()
+      }
     })
   })
 });
