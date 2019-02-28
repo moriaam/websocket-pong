@@ -4,17 +4,32 @@
     var canvas = $('#c')[0];
     var waiting = $('#waiting');
     var join = $('#join');
-    var leftPlayerText = $('#left-player');
-    var rightPlayerText = $('#right-player');
+    var berlinPlayerText = $('#berlin-player');
+    var berlinScore = $('#berlin-score');
+    var stockholmScore = $('#stockholm-score');
+    var stockholmPlayerText = $('#stockholm-player');
     var context = canvas.getContext('2d');
-    var right = true;
+    var right = Math.random() > 0.5;
     var vertical_direction = 'up';
     var player_number;
     var game_started = false;
+    const centered_ball_position = {
+      x: 248,
+      y: 126
+    }
+
     waiting.hide()
 
     join[0].onclick = (e) => {
       const site = window.location.search.substring(1).split('=')[1]
+
+      if (site === 'berlin') {
+        berlinPlayerText.html('BERLIN')
+        player_number = 1
+      } else {
+        stockholmPlayerText.html('STOCKHOLM')
+        player_number = 2
+      }
 
       socket.emit('player_joined', site)
 
@@ -104,8 +119,8 @@
             set_ball(ball_position.x, ball_position.y, false);
 
             if((ball_position.y > guard_postition.right.y + 20 || ball_position.y < guard_postition.right.y) && ball_position.x >= 470) {
-              socket.emit('game_over', JSON.stringify({winner: 'Player 1'}));
-              game_started = false;
+              socket.emit('round_over', JSON.stringify({winner: 'berlin'}));
+              // game_started = false;
             }
 
             if(ball_position.y <= 0)
@@ -131,8 +146,8 @@
             set_ball(ball_position.x, ball_position.y, false);
 
             if((ball_position.y > guard_postition.left.y + 20 || ball_position.y < guard_postition.left.y) && ball_position.x <= 26) {
-              socket.emit('game_over', JSON.stringify({winner: 'Player 2'}));
-              game_started = false;
+              socket.emit('round_over', JSON.stringify({winner: 'stockholm'}));
+              // game_started = false;
             }
 
             if(ball_position.y <= 0)
@@ -214,14 +229,11 @@
     });
 
     socket.on('player_enter', function(playerNumber, site) {
-      console.log(playerNumber, site)
       if(playerNumber === 1) {
         player_number = 1;
-        leftPlayerText.html(site)
       }
       else {
         player_number = 2;
-        rightPlayerText.html(site)
       }
 
       // rightPlayerText.html(data)
@@ -230,7 +242,21 @@
     socket.on('start_game', function(data) {
       game_started = true;
 
+      berlinPlayerText.html('BERLIN')
+      stockholmPlayerText.html('STOCKHOLM')
+
       waiting.hide()
+    });
+
+    socket.on('start_round', function(data) {
+      set_ball(ball_position.x, ball_position.y, true);
+
+      ball_position.x = centered_ball_position.x
+      ball_position.y = centered_ball_position.y
+
+      right = Math.random() > 0.5
+
+      set_ball(ball_position.x, ball_position.y, false);
     });
 
     socket.on('move', function(data) {
@@ -250,10 +276,11 @@
       }
     });
 
-    socket.on('game_over', function(data) {
-      var winner = JSON.parse(data).winner;
-      game_started = false;
-      // alert(winner + ' won.');
+    socket.on('update_scores', function(data) {
+      berlinScore.html(data.berlin)
+      stockholmScore.html(data.stockholm)
+
+      // game_started = false;
     })
   });
 }).call(this);

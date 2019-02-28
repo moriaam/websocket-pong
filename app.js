@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 
 var players = 0;
 var root_path = process.cwd();
+let scores = {berlin: 0, stockholm: 0}
 
 app.use(express.static(root_path + '/public'));
 
@@ -24,16 +25,21 @@ io.on('connection', function(socket) {
     if(players < 2) {
       players++;
 
-      if(players === 1) {
-        socket.emit('player_enter', 1, data);
-        socket.broadcast.emit('player_enter', 1, data);
-      }
-      else if(players === 2) {
-        socket.emit('player_enter', 2, data);
-        socket.broadcast.emit('player_enter', 2, data);
+      if(players === 2) {
         io.emit('start_game', 'ok'); 
         players = 0;
       }
+
+      // if(players === 1) {
+      //   socket.emit('player_enter', 1, data);
+      //   socket.broadcast.emit('player_enter', 1, data);
+      // }
+      // else if(players === 2) {
+      //   socket.emit('player_enter', 2, data);
+      //   socket.broadcast.emit('player_enter', 2, data);
+      //   io.emit('start_game', 'ok'); 
+      //   players = 0;
+      // }
 
       // if(players === 1)
       //   socket.emit('player_enter', 1);
@@ -48,8 +54,14 @@ io.on('connection', function(socket) {
       socket.broadcast.emit('move', data);
     });
 
-    socket.on('game_over', function(data) {
-      io.emit('game_over', data);
+    socket.on('round_over', function(data) {
+      var winner = JSON.parse(data).winner;
+      
+      scores[winner]++
+
+      io.emit('update_scores', scores);
+
+      io.emit('start_round', 'ok');
     })
   })
 });
