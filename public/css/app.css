@@ -4,9 +4,28 @@ h1 {
   margin: 0;
 }
 
-p {
-  text-align: center;
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.logo {
+  padding: 40px 0;
+  display: flex;
+  margin-left: 20px;
+  /* justify-content: center; */
+}
+
+.instructions {
+  display: flex;
+  align-items: center;
+  margin-left: 80px;
   font-family: 'Arial';
+  font-size: 28px;
+}
+
+.instruction {
+  margin-right: 10px;
 }
 
 .center {
